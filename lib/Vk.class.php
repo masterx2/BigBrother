@@ -1,5 +1,5 @@
 <?php
-require '/var/www/online/lib/Curl.class.php';
+require 'lib/Curl.class.php';
 
 class Vk {
 	public function __construct() {
