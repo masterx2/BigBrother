@@ -5,9 +5,11 @@
         <title>Online Logger</title>
         <script type="text/javascript" src="http://yandex.st/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
         <script type="text/javascript" src="js/moment.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
@@ -34,6 +36,19 @@
             </div>
         </div>
         <div class="container" id="main">
+            <div class="row" id="controls">
+                <div class="col-lg-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">from</span>
+                        <input type="text" class="form-control datetimepicker" id="start" />
+                        <span class="input-group-addon addon-to">to</span>
+                        <input type="text" class="form-control datetimepicker" id="end" />
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <button class="btn btn-default" id="update">Update</button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div id="display"></div>

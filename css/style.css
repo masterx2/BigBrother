@@ -44,6 +44,21 @@ body {
 .user-timeline > div.offline {
     background: rgb(130, 130, 130);
 }
+#controls {
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+.addon-to {
+    border-right: 0;
+}
 .navbar-default {
-    box-shadow: 0 0 30px rgb(48, 48, 48);
+    box-shadow: 0 0 30px rgb(44, 44, 44);
+}
+#start, #end {
+    padding-left: 20px;
+    margin-top: 0;
+    width: 160px;
+}
+#update {
+    margin-left: -30px;
 }

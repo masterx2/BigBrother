@@ -1,6 +1,9 @@
 var app;
 $(function() {
     app = new Core();
+    $('#update').click(function(){
+        app.load($('#start').val(), $('#end').val());
+    })
 });
 function Core(){
     var t = this;
@@ -9,9 +12,13 @@ function Core(){
         t.log('Core Activated');
         t.log('Loading Initial Data');
         var now = new Date(),
-            minusDay = new Date(now.getTime()-86400),
-            plusDay = new Date(now.getTime()+86400);
-        t.load('12-06-2014 20:00:00', '13-06-2014 20:00:00');
+            minusDay = new Date(now.getTime()-864e5),
+            plusDay = new Date(now.getTime()+864e5);
+
+        $('#start').val(minusDay.toPicker());
+        $('#end').val(plusDay.toPicker());
+
+        t.load(minusDay.toPicker(), plusDay.toPicker());
     };
 
     t.process = function(data, users){
@@ -25,6 +32,7 @@ function Core(){
     t.render = function(data, users) {
         var display = $('#display'),
             count = data.length;
+        display.empty();
         for(var user_index=0;user_index < count;user_index++) {
             var user_id = data[user_index]._id,
                 user = users.filter(function(user){return user.uid == user_id})[0];
@@ -41,14 +49,16 @@ function Core(){
             userTimeline = $('<div></div>').addClass('user-timeline');
 
         var timeLineWidth = 870,
-            timePeriodSec = 86400,
+            timePeriodSec = new Date(t.to) - new Date(t.from),
             secPerPixel = timeLineWidth / timePeriodSec,
             timeItemsCount = data.timeline.length;
+        t.log(timePeriodSec);
 
         for (var i=0;i<timeItemsCount;i++){
             var itemWidth = data.timeline[i].duration * secPerPixel,
                 status = data.timeline[i].status,
-                title = new Date(data.timeline[i].start['sec']*1e3).logStamp()+' '+new Date(data.timeline[i].end['sec']*1e3).logStamp();
+                title = new Date(data.timeline[i].start['sec']*1e3).logStamp()+
+                    ' '+new Date(data.timeline[i].end['sec']*1e3).logStamp();
                 timeItem = $('<div></div>').css({width: itemWidth}).addClass(statusClass[status])
                     .attr('title',title);
             userTimeline.append(timeItem);
@@ -77,6 +87,8 @@ function Core(){
     };
 
     t.load = function(from, to){
+        t.from = from;
+        t.to = to;
         $.ajax({
             url: 'http://bigbrother.ru/api.php',
             dataType: 'json',
@@ -100,14 +112,39 @@ function Core(){
 
     t.prepare = function(){
         moment.lang('ru');
+        $.fn.datetimepicker.dates['ru'] = {
+            days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
+            daysShort: ["Вск", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб", "Вск"],
+            daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+            months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+            today: "Сегодня",
+            suffix: [],
+            meridiem: []
+        };
+        $('.datetimepicker').datetimepicker({
+            format: 'dd-mm-yyyy hh:ii',
+            autoclose: true,
+            weekStart: 1,
+            todayBtn: 'linked',
+            todayHighlight: true,
+            pickerPosition: 'bottom-right',
+            // language: 'ru'
+        });
+
         t.DEBUG = true;
-        Date.prototype.rusDate = function () {
-            return this.getDate() + '-' + (this.getMonth() + 1) + '-' + this.getFullYear();
+        Date.prototype.rusDate = function (){
+            var rawMonth = this.getMonth()+1;
+            if (rawMonth < 10) { var month = '0'+rawMonth} else {var month = rawMonth}
+            return this.getDate() + '-' + month + '-' + this.getFullYear();
         };
         Date.prototype.logStamp = function(){
             return '['+this.rusDate()+' '+this.getHours()+':'+this.getMinutes()+
                 ':'+this.getSeconds()+'.'+this.getMilliseconds()+']';
         };
+        Date.prototype.toPicker = function(){
+            return this.rusDate()+' '+this.getHours()+':'+this.getMinutes();
+        }
     };
     t.init();
 }
