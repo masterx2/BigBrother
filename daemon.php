@@ -61,20 +61,22 @@ class DaemonClass {
                     'fields' => 'online'
                 )
             );
-            foreach ($friends as $friend) {
-                $user_timeline = $r->hGetAll($friend['user_id']); // Get All Keys(Timemarks)
-                if ($user_timeline) {
-                    end($user_timeline); $lastkey = key($user_timeline); // Get Last Timemark Key
-                    $last_user_state = $r->hGet($friend['user_id'], $lastkey); // Get Last State
-                    // Check for stateChange
-                    if ($friend['online'] != $last_user_state) { // If Changed Update User Hash
-                        echo '['.$now->format("d-m-Y H:i:s").'] '.$friend['first_name'].' '.$friend['last_name']
-                            .' changed state to ['.$states[$friend['online']].']'.PHP_EOL;
+            if (!empty($friends)) {
+                foreach ($friends as $friend) {
+                    $user_timeline = $r->hGetAll($friend['user_id']); // Get All Keys(Timemarks)
+                    if ($user_timeline) {
+                        end($user_timeline); $lastkey = key($user_timeline); // Get Last Timemark Key
+                        $last_user_state = $r->hGet($friend['user_id'], $lastkey); // Get Last State
+                        // Check for stateChange
+                        if ($friend['online'] != $last_user_state) { // If Changed Update User Hash
+                            echo '['.$now->format("d-m-Y H:i:s").'] '.$friend['first_name'].' '.$friend['last_name']
+                                .' changed state to ['.$states[$friend['online']].']'.PHP_EOL;
+                            $r->hSet($friend['user_id'], $now->getTimestamp(), $friend['online']);
+                        }
+                    } else {
+                        echo 'User not found...creating with UID['.$friend['uid'].']'.PHP_EOL;
                         $r->hSet($friend['user_id'], $now->getTimestamp(), $friend['online']);
                     }
-                } else {
-                    echo 'User not found...creating with UID['.$friend['uid'].']'.PHP_EOL;
-                    $r->hSet($friend['user_id'], $now->getTimestamp(), $friend['online']);
                 }
             }
             sleep(10);

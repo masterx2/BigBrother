@@ -1,102 +1,49 @@
 body {
-    margin: 0;
-    padding: 0;
-    background: rgb(148, 148, 148);
+    background-image: url('../img/back.png');
 }
-#wrap {
-    width: 1181px;
-    margin: auto;
+.logos {
+    margin: 8px;
 }
-.timeline {
-    width: 999px;
-    height: 15px;
-    border: 2px solid rgb(73, 73, 73);
-    margin: 5px 0px;
-    overflow: hidden;
-    border-radius: 4px;
+#main {
+    margin-top: 70px;
 }
-.timeitem {
-    vertical-align: super;
-    display: inline-block;
-    height: 15px;
-    line-height: 14px;
-    font-family: 'Ubuntu';
-    font-size: 60%;
+#display {
+    width: 1100px;
+    background: rgba(255, 255, 255, 1);
+    padding: 10px 14px 10px 12px;
+    border: 1px solid white;
+    box-shadow: 0 0 1px rgb(48, 48, 48);
+    margin-bottom: 30px;
 }
-.timeitem.online {
-    background: rgb(58, 255, 58);
-    color: black;
-}
-.timeitem.offline {
-    background: rgb(83, 83, 83);
-    color: white;
-}
-.timeline.offline {
-    background: rgb(83,83,83);
-}
-.timeline.online {
-    background: rgb(58,255,58);
-    border-color: rgb(58,255,58);
-}
-.name {
-    float: left;
-    width: 170px;
-    font-family: 'Ubuntu';
+.user-title {
+    padding: 2px 3px;
+    width: 150px;
     font-size: 80%;
-    margin-left: 8px;
-    line-height: 15px;
+    float: left;
 }
-.user:nth-child(odd) {
-    background: rgb(221, 221, 221);
-    border-radius: 5px;
+.user-timeline {
+    background: rgb(255, 255, 255);
+    width: 870px;
+    height: 19px;
+    margin-left: 150px;
+    border-top: 1px solid silver;
+    border-left: 1px solid silver;
+    border-right: 1px solid silver;
 }
-#head {
-    position: relative;
-    font-family: 'Ubuntu';
-    font-size: 160%;
-    color: white;
-    font-weight: 100;
-    margin-bottom: -42px;
-    margin-top: 20px;
-    padding-left: 18px;
+.user-row {
+    border-bottom: 1px solid silver;
+    margin-bottom: 5px;
 }
-#ruler {
-    margin-left: 177px;
-    background: rgb(248, 196, 86);
-    border: 1px solid black;
+.user-timeline > div {
+    height: 18px;
+    float: left;
 }
-#container {
-    overflow: hidden;
-    position: relative;
+.user-timeline > div.online {
+    background: rgb(144, 255, 144);
 }
-#activeruler {
-    z-index: 100;
-    position: absolute;
-    width: 1px;
-    border: 1px solid red;
-    height: 9999px;
-    left: 468px;
-    top: 29px;
-    box-shadow: 0px 0px 5px black;
-    background: rgba(255, 0, 0, 0.55);
+.user-timeline > div.offline {
+    background: rgb(130, 130, 130);
 }
-.timeline:hover {
-    border-color: red;
-}
-.timeitem.online.onruler {
-    background: red;
-}
-.timeitem.offline.onruler {
-    background: rgb(71, 0, 0);
-}
-.user.ruleroffline {
-    background: black;
-    color: white;
-}
-.user.ruleronline {
-    background: greenyellow;
-    color: black;
-}
-.user {
-    border-radius: 5px;
+.navbar-default {
+    box-shadow: 0 0 30px rgb(48, 48, 48);
 }

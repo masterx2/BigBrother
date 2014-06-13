@@ -12,7 +12,8 @@ class Api {
                                          ['$group' => ['_id' => '$user_id',
                                                        'timeline' => [ '$push' => [ 'start' => '$start',
                                                                                     'end' => '$end',
-                                                                                    'status' => '$status']],
+                                                                                    'status' => '$status',
+                                                                                    'duration' => '$duration' ]],
                                                        'timemarks' => ['$sum' => 1]
                                                        ]
                                          ]);
