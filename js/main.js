@@ -44,12 +44,12 @@ function Core(){
 
         var statusClass = { 1: 'online', 0: 'offline'};
 
-        var userRow = $('<div></div>').addClass('user-row'),
-            userTitle = $('<div></div>').addClass('user-title').text(user.first_name+' '+user.last_name),
-            userTimeline = $('<div></div>').addClass('user-timeline');
+        var userRow = $('<div>').addClass('user-row'),
+            userTitle = $('<div>').addClass('user-title').text(user.first_name+' '+user.last_name),
+            userTimeline = $('<div>').addClass('user-timeline');
 
         var timeLineWidth = 870,
-            timePeriodSec = new Date(t.to) - new Date(t.from),
+            timePeriodSec = (t.to - t.from) / 1e3,
             secPerPixel = timeLineWidth / timePeriodSec,
             timeItemsCount = data.timeline.length;
         t.log(timePeriodSec);
@@ -87,8 +87,9 @@ function Core(){
     };
 
     t.load = function(from, to){
-        t.from = from;
-        t.to = to;
+        t.from = from.toDate();
+        t.to = to.toDate();
+        t.log('Load Period from: '+from+' to:'+to);
         $.ajax({
             url: 'http://bigbrother.ru/api.php',
             dataType: 'json',
@@ -129,7 +130,7 @@ function Core(){
             todayBtn: 'linked',
             todayHighlight: true,
             pickerPosition: 'bottom-right',
-            // language: 'ru'
+            language: 'ru'
         });
 
         t.DEBUG = true;
@@ -144,6 +145,14 @@ function Core(){
         };
         Date.prototype.toPicker = function(){
             return this.rusDate()+' '+this.getHours()+':'+this.getMinutes();
+        };
+        String.prototype.toDate = function() {
+            var parts = this.split(' '),
+                date = parts[0],
+                time = parts[1],
+                dateparts = date.split('-'),
+                timeparts = time.split(':');
+            return new Date(dateparts[2],parseInt(dateparts[1])-1,dateparts[0],timeparts[0],timeparts[1]);
         }
     };
     t.init();

@@ -24,8 +24,7 @@ class DaemonClass {
         pcntl_signal(SIGCHLD, array($this, "childSignalHandler"));
     }
 
-    public function
-    run() {
+    public function run() {
         echo "Running daemon controller".PHP_EOL;
         while (!$this->stop_server) {
             while(count($this->currentJobs) >= $this->maxProcesses) {
@@ -53,9 +52,7 @@ class DaemonClass {
             $now = new DateTime();
             $r = new Redis();
             $r->connect('localhost','6379');
-
             $states = [ 1 => 'online', 0 => 'offline' ];
-
             $friends = $vk->request('friends.get',  array(
                     'user_id' => $user,
                     'fields' => 'online'
